@@ -1,7 +1,7 @@
 ---
 name: tag-criteria
 description: This skill should be used when analyzing Obsidian notes for tagging, determining which tags apply to content, or understanding tag definitions and criteria. Provides the complete tag taxonomy with judgment criteria for the obsidian-tagger agent.
-version: 1.0.0
+version: 0.1.0
 ---
 
 # Obsidian Tag Criteria
