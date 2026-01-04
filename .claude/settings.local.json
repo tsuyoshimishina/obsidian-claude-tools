@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "WebSearch",
+      "TodoRead",
+      "mcp__obsidian-mcp-tools__fetch",
+      "mcp__obsidian-mcp-tools__get_server_info",
+      "mcp__obsidian-mcp-tools__get_active_file",
+      "mcp__obsidian-mcp-tools__search_vault",
+      "mcp__obsidian-mcp-tools__search_vault_simple",
+      "mcp__obsidian-mcp-tools__search_vault_smart",
+      "mcp__obsidian-mcp-tools__list_vault_files",
+      "mcp__obsidian-mcp-tools__get_vault_file",
+      "mcp__obsidian-mcp-tools__append_to_vault_file",
+      "mcp__obsidian-mcp-tools__patch_vault_file"
+    ]
+  }
+}
