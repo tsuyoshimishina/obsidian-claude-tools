@@ -72,6 +72,7 @@ install_plugin() {
     echo ""
     echo "Deployed files:"
     echo "  - $skills_target/SKILL.md"
+    echo "  - $skills_target/tags/*.md"
     echo "  - $AGENTS_TARGET/obsidian-tagger.md"
     echo "  - $COMMANDS_TARGET/tag-notes.md"
 }

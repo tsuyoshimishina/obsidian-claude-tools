@@ -23,14 +23,20 @@ Use `mcp__obsidian-mcp-tools__get_vault_file` with the provided filename to read
 
 ### Step 2: Apply Tag Criteria
 
+Tag criteria are provided in the task prompt within `---BEGIN CRITERIA---` and `---END CRITERIA---` markers.
+
+1. Extract the criteria content from the prompt
+2. Parse the tag definitions and judgment rules from the criteria
+3. Evaluate the note content against each defined tag
+
+**Fallback** (if no criteria markers in prompt):
+
 Read the tag-criteria skill file. Try these paths in order until one succeeds:
 1. **Development**: `./skills/tag-criteria/SKILL.md` (relative to working directory)
 2. **Project scope**: `./.claude/skills/tag-criteria/SKILL.md`
 3. **User scope**: Use Bash to get home directory (`echo $HOME` on Unix, `echo $USERPROFILE` on Windows), then use Read tool with `<home>/.claude/skills/tag-criteria/SKILL.md`
 
 If all paths fail, report error and stop processing.
-
-Evaluate the note content against all defined tags in the skill file.
 
 **Judgment Principle**: Only apply tags when content CLEARLY matches the criteria. When uncertain, do NOT apply the tag.
 

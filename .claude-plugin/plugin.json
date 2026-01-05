@@ -1,7 +1,7 @@
 {
   "name": "obsidian-auto-tagger",
   "description": "A tool that analyzes Obsidian notes and automatically assigns appropriate tags based on their content. Only adds tags from 14 predefined categories that clearly match the content.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Tsuyoshi Mishina",
     "url": "https://github.com/tsuyoshimishina"

@@ -1,6 +1,6 @@
 ---
 description: Automatically assign tags to Obsidian notes
-argument-hint: "[folder-path] [--dry-run]"
+argument-hint: "[folder-path] [--dry-run] [--criteria <file>]"
 ---
 
 # Tag Notes Command
@@ -13,6 +13,7 @@ $ARGUMENTS
 
 - `folder-path` (optional): Target folder path. Processes entire vault if omitted
 - `--dry-run` (optional): Simulate tagging without modifying files
+- `--criteria <file>` (optional): Path to tag criteria file. Defaults to `tags/_all.md`
 
 ## Workflow
 
@@ -30,23 +31,54 @@ $ARGUMENTS
 
 3. Display note list and confirm before processing
 
-### Phase 2: Analysis & Tagging
+### Phase 2: Criteria Resolution
+
+1. Parse `--criteria` argument from $ARGUMENTS
+
+2. Locate the skill folder. Try these paths in order:
+   - `./skills/tag-criteria/` (development)
+   - `./.claude/skills/tag-criteria/` (project scope)
+   - `~/.claude/skills/tag-criteria/` (user scope, use Bash to get home directory)
+
+3. Load tag definitions:
+   - **If `--criteria` specified**: Read the specified file
+     - If path is relative, resolve from skill folder's `tags/` directory
+     - If path is absolute or not found in skill folder, try as-is
+   - **If `--criteria` not specified**: Read `tags/_all.md` from skill folder
+
+4. Load `SKILL.md` from skill folder (contains Judgment Rules)
+
+5. Combine into `full_criteria`:
+   ```
+   {SKILL.md content}
+
+   ## Tag Definitions
+
+   {tag definitions content}
+   ```
+
+### Phase 3: Analysis & Tagging
 
 1. Launch obsidian-tagger agents in parallel
    - **Parallel limit: 10 tasks**
    - Assign one file per agent
 
-2. Agent invocation:
+2. Agent invocation with criteria:
    ```
    Task tool with subagent_type="obsidian-tagger":
-   "Analyze the note at [vault-path]/[file-path] and apply appropriate tags based on tag-criteria skill."
+   "Analyze the note at [vault-path]/[file-path] and apply appropriate tags.
+
+   ---BEGIN CRITERIA---
+   {full_criteria}
+   ---END CRITERIA---
+   "
    ```
 
 3. Repeat until all files are processed
    - Assign next file as tasks complete
    - Display progress
 
-### Phase 3: Summary
+### Phase 4: Summary
 
 Output result report after processing:
 
@@ -86,6 +118,8 @@ When `--dry-run` is specified:
 
 ## Error Handling
 
+- **Criteria file not found**: Report error with tried paths and stop
+- **Skill folder not found**: Report error with search paths and stop
 - File read error: Skip and continue
 - Agent failure: Skip and record in report
 - Output result report even on partial success
@@ -93,10 +127,12 @@ When `--dry-run` is specified:
 ## Example Usage
 
 ```
-/tag-notes                    # Process entire vault
-/tag-notes inbox              # Process inbox folder
-/tag-notes notes/projects     # Process specific subfolder
-/tag-notes . --dry-run        # Simulate on entire vault
+/tag-notes                              # Process entire vault with all tags
+/tag-notes inbox                        # Process inbox folder
+/tag-notes notes/projects               # Process specific subfolder
+/tag-notes . --dry-run                  # Simulate on entire vault
+/tag-notes --criteria sam-3d.md         # Use custom criteria file
+/tag-notes inbox --criteria papers.md   # Process inbox with papers criteria only
 ```
 
 ## Notes
@@ -104,3 +140,4 @@ When `--dry-run` is specified:
 - Requires Obsidian MCP Tools (mcp__obsidian-mcp-tools) to be available
 - Tags are added to existing tag sections or appended at file end with `---` separator
 - Existing tags are preserved; duplicates are not added
+- Custom criteria files should follow the same format as `tags/_all.md`
