@@ -1,6 +1,6 @@
 {
-  "name": "obsidian-auto-tagger",
-  "description": "A tool that analyzes Obsidian notes and automatically assigns appropriate tags based on their content. Only adds tags from 14 predefined categories that clearly match the content.",
+  "name": "obsidian-claude-tools",
+  "description": "Claude Code plugin for managing Obsidian notes. Includes automatic tagging based on content analysis and Japanese text formatting (colon conversion, spacing adjustments, bracket normalization).",
   "version": "0.2.0",
   "author": {
     "name": "Tsuyoshi Mishina",
