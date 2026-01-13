@@ -45,6 +45,27 @@ model: opus  # Options: opus, sonnet, haiku
 - `sonnet` - Good balance of cost and accuracy (95% match with opus in testing)
 - `haiku` - Fastest and cheapest, may reduce tagging accuracy
 
+### Japanese Formatter (`/format-japanese-note`)
+
+Applies consistent Japanese formatting rules to Obsidian notes.
+
+**Features:**
+- Converts half-width colons to full-width (`:`→`：`)
+- Inserts spaces at half-width/full-width boundaries (`VGGTは`→`VGGT は`)
+- Converts half-width parentheses to full-width (`(説明)`→`（説明）`)
+- Preserves URLs, code blocks, and Markdown syntax
+- Dry-run mode for preview
+
+**Usage:**
+```
+/format-japanese-note inbox/note.md              # Format single file
+/format-japanese-note inbox                      # Format all files in folder
+/format-japanese-note inbox/note.md --dry-run   # Preview changes
+```
+
+**Formatting Rules:**
+- See [`commands/format-japanese-note.md`](commands/format-japanese-note.md) for detailed rules
+
 *More tools are planned for future releases.*
 
 ## Requirements
@@ -67,18 +88,19 @@ Run from Git Bash:
 ```
 obsidian-claude-tools/
 ├── .claude-plugin/
-│   └── plugin.json           # Plugin metadata
+│   └── plugin.json               # Plugin metadata
 ├── agents/
-│   └── obsidian-tagger.md    # Auto-tagger agent
+│   └── obsidian-tagger.md        # Auto-tagger agent
 ├── commands/
-│   └── tag-notes.md          # /tag-notes command
+│   ├── tag-notes.md              # /tag-notes command
+│   └── format-japanese-note.md   # /format-japanese-note command
 ├── skills/
 │   └── tag-criteria/
-│       ├── SKILL.md          # Judgment rules
+│       ├── SKILL.md              # Judgment rules
 │       └── tags/
-│           ├── _all.md       # Default tag definitions
-│           └── *.md          # Custom criteria files
-├── deploy.sh                 # Deployment script
+│           ├── _all.md           # Default tag definitions
+│           └── *.md              # Custom criteria files
+├── deploy.sh                     # Deployment script
 └── README.md
 ```
 
