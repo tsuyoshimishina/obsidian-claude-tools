@@ -60,12 +60,28 @@ When the converted full-width colon is followed by URL or Markdown/Obsidian synt
 | Japanese → Number | `レベルの3D` | `レベルの 3D` |
 | Number → Counter | `1枚` | `1 枚` |
 
+**Space around emphasis markers (`**` and `*`):**
+
+Insert space before/after emphasis markers for Textile compatibility:
+
+| Before | After |
+|--------|-------|
+| `これは**強調**です` | `これは **強調** です` |
+| `テキスト*イタリック*続き` | `テキスト *イタリック* 続き` |
+| `**行頭は除外**` | `**行頭は除外**`（no change） |
+| `除外**行末も**` | `除外**行末も**`（no change） |
+
+Rules for emphasis markers:
+- Insert space before opening `**` or `*` (unless at line start)
+- Insert space after closing `**` or `*` (unless at line end)
+- Skip if space already exists
+- Properly pair opening/closing markers
+
 **Exclusions:**
 - Before/after parentheses: `（VGGT）と` - no space needed
 - URLs: `https://xdimlab.github.io/Gen3R/`
 - Tags: `#3d-reconstruction` (no space after #)
 - Code blocks/inline code
-- Markdown syntax boundaries: `**text**の` - no space between `**` and `の`
 
 **Character class regex:**
 ```
@@ -130,6 +146,10 @@ For each target file:
      - Skip if space already exists
      - Skip if at parenthesis boundary (full-width or half-width)
      - Skip if inside exclusion zone
+     - **Emphasis markers** (`**` and `*`):
+       - Insert space before opening marker (unless at line start or space exists)
+       - Insert space after closing marker (unless at line end or space exists)
+       - Track paired markers to distinguish opening vs closing
    - **Rule 1 last** (colon): `:` → `：`
      - Skip if inside exclusion zone
      - Skip if preceded by `http`, `https`, `arXiv`, or other URL schemes
@@ -171,6 +191,7 @@ Output result report:
 | 5 | `**GitHub**: https://...` | `**GitHub**： https://...` |
 | 8 | `**参照**: [[note]]` | `**参照**： [[note]]` |
 | 12 | `VGGTは` | `VGGT は` |
+| 15 | `これは**強調**です` | `これは **強調** です` |
 | 18 | `(2026年1月)` | `（2026 年 1 月）` |
 ```
 
